@@ -7,4 +7,4 @@ class GlazingProjectForm(forms.ModelForm):
   
   class Meta:
     model = Glazing_Project
-    fields = ('description', 'floor_number',)
+    fields = ('description', 'floor_number','climate_zone_id')

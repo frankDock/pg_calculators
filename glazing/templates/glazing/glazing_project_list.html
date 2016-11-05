@@ -6,7 +6,7 @@
             <div class="date">
                 {{ glazing_project.pub_date }}
             </div>
-            <h1><a href="">{{ glazing_project.description }}</a></h1>
+            <h1><a href="{% url 'glazing:glazing_project_detail' glazing_project.id %}">{{ glazing_project.description }}</a></h1>
             <p>{{ glazing_project.floor_number}}</p>
         </div>
     {% endfor %}

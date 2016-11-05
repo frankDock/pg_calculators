@@ -1,0 +1,15 @@
+{% extends 'glazing/base.html' %}
+
+{% block content %}
+    <div class="post">
+        {% if detail.pub_date %}
+            <div class="date">
+                {{ detail.pub_date }}
+            </div>
+        {% endif %}
+        <a class="btn btn-default" href="{% url 'glazing:glazing_project_edit' pk=detail.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        <h1>{{ detail.description }}</h1>
+        <p>{{ detail.floor_number }}</p>
+        <p>{{ detail.climate_zone_id }}</p>
+    </div>
+{% endblock %}
