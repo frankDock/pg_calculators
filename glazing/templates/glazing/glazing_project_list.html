@@ -1,0 +1,13 @@
+{% extends 'glazing/base.html' %}
+
+{% block content %}
+    {% for glazing_project in glazing_projects_query_set %}
+        <div class="post">
+            <div class="date">
+                {{ glazing_project.pub_date }}
+            </div>
+            <h1><a href="">{{ glazing_project.description }}</a></h1>
+            <p>{{ glazing_project.floor_number}}</p>
+        </div>
+    {% endfor %}
+{% endblock content %}
