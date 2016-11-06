@@ -6,6 +6,9 @@ class Products(models.Model):
     description = models.CharField(max_length=200)
     category = models.IntegerField(default=1)
     product_range = models.IntegerField(default=1)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.description)
     
 class Frame(models.Model):
     description = models.CharField(max_length=200)
@@ -32,9 +35,15 @@ class Frame_Products_Join_Tbl(models.Model):
 
 class Climate_Zone(models.Model):
     description = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.description)
     
 class Orientation(models.Model):
     description = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.description)
 
 class Glazing_Project(models.Model):
     description = models.CharField(max_length=200)
@@ -44,6 +53,10 @@ class Glazing_Project(models.Model):
     nett_floor_area = models.IntegerField(default=1)
     conductance_constant = models.FloatField(default=0)
     CSHGC = models.FloatField(default=0)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.description)
+
 
 class Windows(models.Model):
     glazing_project_id = models.ForeignKey(Glazing_Project, on_delete=models.CASCADE)

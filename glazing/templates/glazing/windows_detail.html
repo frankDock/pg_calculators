@@ -1,0 +1,11 @@
+{% extends 'glazing/base.html' %}
+
+{% block content %}
+    <div class="glazing_project">
+        <h1>{{ detail.description }}<a class="btn btn-default" href="{% url 'glazing:windows_edit' pk=detail.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></h1>
+        <p>{{ detail.glazing_project_id }}</p>
+        <p>width: {{ detail.width }}</p>
+        <p>height: {{ detail.height }}</p>
+    </div>
+{% endblock %}
+
