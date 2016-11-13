@@ -3,23 +3,27 @@
 {% block content %}
     <div class="glazing_project">
         <h1>{{ detail.description }}<a class="btn btn-default" href="{% url 'glazing:glazing_project_edit' pk=detail.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></h1>
-        <p>creation date: {{ detail.pub_date }}<p>
-        <p>number of floors: {{ detail.floor_number }}</p>
-        <p>climate zone: {{ detail.climate_zone_id }}</p>
-        <h2> Windows <a href="{% url 'glazing:windows_new' %}"><span class="glyphicon glyphicon-plus"></span></a></h2>
+        <p>Creation Date: {{ detail.pub_date }}<p>
+        <p>Number of Floors: {{ detail.floor_number }}</p>
+        <p>Nett Floor Area: {{ detail.nett_floor_area }}</p>
+        <p>Climate Zone: {{ detail.climate_zone_id }}</p>
+        <p>Conductance Constant (CU): {{ detail.climate_zone_id.CU }}     
+        <p>Solar Heat Gain Constant (CSHGC): {{ detail.climate_zone_id.CSHGC }}             
+        <h2> Windows <a href="{% url 'glazing:windows_new' glazing_project_id=detail.pk %}"><span class="glyphicon glyphicon-plus"></span></a></h2>
     </div>
     {% for windows in windows_query_set %}
         <div class="windows">
             <table>
                 <tr>
                     <th>Description</th>
-                    <th>Width</th>
-                    <th>Height</th>
-                    <th>Shading P</th>
-                    <th>Shading H</th>
+                    <th>Width (m)</th>
+                    <th>Height (m)</th>
+                    <th>Shading P (m)</th>
+                    <th>Shading H (m)</th>
                     <th>Orientation</th>
-                    <th>Product</th>
-                    <th>Area</th>
+                    <th>Glsss Product</th>
+                    <th>Frame Material</th>
+                    <th>Total Area (m2)</th>
                     <th>PH</th>
                     <th>Solar Exposure</th>
                     <th>SHGC Glazing</th>
@@ -33,15 +37,16 @@
                     <td>{{ windows.width}}</td>
                     <td>{{ windows.height }}</td>
                     <td>{{ windows.shading_p }}</td>
-                    <td>{{ windows.shading_h }}</td><th>Height</th>
+                    <td>{{ windows.shading_h }}</td>
                     <td>{{ windows.orientation_id }}</td>
-                    <td>{{ windows.products_id }}</td>
+                    <td>{{ windows.glass_id }}</td>
+                    <td>{{ windows.frame_id }}</td>
                     <td>{{ windows.window_area }}</td>
                     <td>{{ windows.ph }}</td>
                     <td>{{ windows.solar_exposure }}</td>
-                    <td>{{ windows.shgc_glazing }}</td>
+                    <td>{{ windows.glass_frame_join.SHGC }}</td>
                     <td>{{ windows.shgc_proposed }}</td>
-                    <td>{{ windows.u_value }}</td>
+                    <td>{{ windows.glass_frame_join.U_Value }}</td>
                     <td>{{ windows.conductance }}</td>
                 </tr>
             </table>

@@ -8,12 +8,10 @@
             <table>
                 <tr>
                     <th>Name</th>
-                    <th>Number of Floors</th>
                     <th>Creation Date</th>
                 </tr>
                 <tr>
                     <td><a href="{% url 'glazing:glazing_project_detail' glazing_project.id %}">{{ glazing_project.description }}</a></td>
-                    <td>{{ glazing_project.floor_number}}</td>
                     <td>{{ glazing_project.pub_date }}</td>
                 </tr>
             </table>

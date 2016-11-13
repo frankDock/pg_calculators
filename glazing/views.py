@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .forms import GlazingProjectForm, WindowsForm
-from .models import Windows, Glazing_Project
+from .models import *
+#import pdb; pdb.set_trace()
 
 def glazing_project_list(request):
     glazing_projects_query_set = Glazing_Project.objects.filter(pub_date__lte=timezone.now()).order_by('pub_date')
@@ -40,16 +41,16 @@ def glazing_project_edit(request, pk):
         form = GlazingProjectForm(instance=post)
     return render(request, 'glazing/glazing_project_edit.html', {'form': form})
 
-def windows_new(request):
+def windows_new(request, glazing_project_id):
     if request.method == "POST":
             form = WindowsForm(request.POST)
             if form.is_valid():
                     post = form.save(commit=False)
-                    post.pub_date = timezone.now()
+                    post.window_area = post.width * post.height
                     post.save()
                     return redirect('glazing:windows_detail', windows_id = post.pk)
     else:    
-            form = WindowsForm()
+            form = WindowsForm(initial={'glazing_project_id': glazing_project_id})
     return render(request, 'glazing/windows_edit.html', {'form': form})
 
 def windows_detail(request, windows_id):
