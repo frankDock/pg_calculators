@@ -86,6 +86,8 @@ class Glazing_Project(models.Model):
         verbose_name = 'Glazing Project'
         verbose_name_plural = 'Glazing Projects'
 
+    
+
 class Solar_Exposure_Factor(models.Model):
     zone = models.ForeignKey(Climate_Zone)
     orientation = models.ForeignKey(Orientation)
@@ -100,7 +102,7 @@ class Solar_Exposure_Factor(models.Model):
         verbose_name_plural = 'Solar Exposure Factors'
 
 class Windows(models.Model):
-    glazing_project_id = models.ForeignKey(Glazing_Project, on_delete=models.CASCADE)
+    glazing_project_id = models.ForeignKey(Glazing_Project, on_delete=models.CASCADE, related_name="project")
     description = models.CharField(max_length=200)
     width = models.FloatField(default=0)
     height = models.FloatField(default=0)

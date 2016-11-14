@@ -1,55 +1,122 @@
 {% extends 'glazing/base.html' %}
 
 {% block content %}
-    <div class="glazing_project">
-        <h1>{{ detail.description }}<a class="btn btn-default" href="{% url 'glazing:glazing_project_edit' pk=detail.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></h1>
-        <p>Creation Date: {{ detail.pub_date }}<p>
-        <p>Number of Floors: {{ detail.floor_number }}</p>
-        <p>Nett Floor Area: {{ detail.nett_floor_area }}</p>
-        <p>Climate Zone: {{ detail.climate_zone_id }}</p>
-        <p>Conductance Constant (CU): {{ detail.climate_zone_id.CU }}     
-        <p>Solar Heat Gain Constant (CSHGC): {{ detail.climate_zone_id.CSHGC }}             
-        <h2> Windows <a href="{% url 'glazing:windows_new' glazing_project_id=detail.pk %}"><span class="glyphicon glyphicon-plus"></span></a></h2>
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ detail.description }}
+            <a class="btn btn-primary pull-right" href="{% url 'glazing:glazing_project_edit' pk=detail.pk %}">Edit 
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </h1>
     </div>
-    {% for windows in windows_query_set %}
-        <div class="windows">
-            <table>
+    <div class="col-md-12">
+        <div class="well">
+            <table class="table">
+            <thead></thead>
+            <tbody>
                 <tr>
-                    <th>Description</th>
-                    <th>Width (m)</th>
-                    <th>Height (m)</th>
-                    <th>Shading P (m)</th>
-                    <th>Shading H (m)</th>
-                    <th>Orientation</th>
-                    <th>Glsss Product</th>
-                    <th>Frame Material</th>
-                    <th>Total Area (m2)</th>
-                    <th>PH</th>
-                    <th>Solar Exposure</th>
-                    <th>SHGC Glazing</th>
-                    <th>SHGC Proposed</th>
-                    <th>U-value</th>
-                    <th>Conductance</th>
-
+                    <th>Creation Date:</th>
+                    <td>{{ detail.pub_date }}</td>
+                    <th>Climate Zone:</th>
+                    <td>{{ detail.climate_zone_id }}</td>
                 </tr>
                 <tr>
-                    <td><a href="{% url 'glazing:windows_detail' windows.id %}">{{ windows.description }}</a></td>
-                    <td>{{ windows.width}}</td>
-                    <td>{{ windows.height }}</td>
-                    <td>{{ windows.shading_p }}</td>
-                    <td>{{ windows.shading_h }}</td>
-                    <td>{{ windows.orientation_id }}</td>
-                    <td>{{ windows.glass_id }}</td>
-                    <td>{{ windows.frame_id }}</td>
-                    <td>{{ windows.window_area }}</td>
-                    <td>{{ windows.ph }}</td>
-                    <td>{{ windows.solar_exposure }}</td>
-                    <td>{{ windows.glass_frame_join.SHGC }}</td>
-                    <td>{{ windows.shgc_proposed }}</td>
-                    <td>{{ windows.glass_frame_join.U_Value }}</td>
-                    <td>{{ windows.conductance }}</td>
+                    <th>Number of Floors:</th>
+                    <td>{{ detail.floor_number }}</td>
+                    <th>Conductance Constant (CU):</th>
+                    <td>{{ detail.climate_zone_id.CU }}</td>
                 </tr>
-            </table>
+                <tr>
+                    <th>Nett Floor Area:</th>
+                    <td>{{ detail.nett_floor_area }}</td>
+                    <th>Solar Heat Gain Constant (CSHGC):</th>
+                    <td>{{ detail.climate_zone_id.CSHGC }}</td>
+                </tr>
+            </tbody>
+        </table>
         </div>
-    {% endfor %}   
+        
+    </div>    
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h2> Windows 
+            <a class="btn btn-primary pull-right" href="{% url 'glazing:windows_new' glazing_project_id=detail.pk %}">Add 
+                <span class="glyphicon glyphicon-plus"></span>
+            </a></h2>
+    </div>
+</div>
+    <div class="glazing_project">
+        
+    </div>
+        <div class="table-responsive">
+            <table class="table table-condensed">
+                <tbody>
+                    <tr>
+                        <th>Description</th>
+                        <th>W & H</th>
+                        <!--<th>Height (m)</th>-->
+                        <th>Shading P (m)</th>
+                        <th>Shading H (m)</th>
+                        <th>Orientation</th>
+                        <th>Glsss Product</th>
+                        <th>Frame Material</th>
+                        <th>Total Area (m<sup>2</sup>)</th>
+                        <th>PH</th>
+                        <th>Solar Exposure</th>
+                        <th>SHGC Glazing</th>
+                        <th>SHGC Proposed</th>
+                        <th>U-value</th>
+                        <th>Conductance</th>
+                        <th></th>
+                    </tr>
+                    {% for windows in windows_query_set %}
+                    <tr>
+                        <td><a href="{% url 'glazing:windows_detail' windows.id %}">{{ windows.description }}</a></td>
+                        <td>{{ windows.width}} / {{ windows.height }}</td>
+                        <!--<td></td>-->
+                        <td>{{ windows.shading_p }}</td>
+                        <td>{{ windows.shading_h }}</td>
+                        <td>{{ windows.orientation_id }}</td>
+                        <td>{{ windows.glass_id }}</td>
+                        <td>{{ windows.frame_id }}</td>
+                        <td>{{ windows.window_area }}</td>
+                        <td>{{ windows.ph }}</td>
+                        <td>{{ windows.solar_exposure }}</td>
+                        <td>{{ windows.glass_frame_join.SHGC }}</td>
+                        <td>{{ windows.shgc_proposed }}</td>
+                        <td>{{ windows.glass_frame_join.U_Value }}</td>
+                        <td>{{ windows.conductance }}</td>
+                        <td><a class="btn btn-default" href="{% url 'glazing:windows_edit' pk=detail.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    </tr>
+                    {% endfor %}  
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7"></td>
+                        <td>{{total_area.window_area__sum}} m<sup>2</sup></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{total_shgc_proposed.shgc_proposed__sum}}</td>
+                        <td></td>
+                        <td>{{total_conductance.conductance__sum}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="7"></td>
+                        <td>{{net_glazed_area_to_floor_area_ratio}} %</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                </tfoot>
+                
+            </table>
+        </div> 
 {% endblock %}

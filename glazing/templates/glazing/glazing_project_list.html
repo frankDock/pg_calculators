@@ -1,20 +1,35 @@
 {% extends 'glazing/base.html' %}
 
 {% block content %}
-    <h2> Projects <a href="{% url 'glazing:glazing_project_new' %}"><span class="glyphicon glyphicon-plus"></span></a></h2>
-    <br>
-    {% for glazing_project in glazing_projects_query_set %}
+<div class="row">
+    <div class="col-md-12">
+        <h2> Projects 
+            <a href="{% url 'glazing:glazing_project_new' %}"><span class="glyphicon glyphicon-plus"></span></a>
+        </h2>
+
         <div class="post">
-            <table>
+            <table class="table table-striped">
                 <tr>
                     <th>Name</th>
                     <th>Creation Date</th>
+                    <th>Climate Zone</th>
+                    <th>Floor Number</th>
+                    <th>Nett Floor Area</th>
                 </tr>
+                {% for project in glazing_projects_query_set %}
                 <tr>
-                    <td><a href="{% url 'glazing:glazing_project_detail' glazing_project.id %}">{{ glazing_project.description }}</a></td>
-                    <td>{{ glazing_project.pub_date }}</td>
+                    <td>
+                        <a href="{% url 'glazing:glazing_project_detail' project.id %}">
+                        {{ project.description }}</a>
+                    </td>
+                    <td>{{ project.pub_date }}</td>
+                    <td>{{ project.climate_zone_id}}</td>
+                    <td>{{ project.floor_number}}</td>
+                    <td>{{ project.nett_floor_area}}</td>
                 </tr>
+                {% endfor %}
             </table>
         </div>
-    {% endfor %}
+    </div>
+</div>
 {% endblock content %}

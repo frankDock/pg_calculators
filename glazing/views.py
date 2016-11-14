@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .forms import GlazingProjectForm, WindowsForm
 from .models import *
+from django.db.models import Sum
 #import pdb; pdb.set_trace()
 
 def glazing_project_list(request):
@@ -23,9 +24,21 @@ def glazing_project_new(request):
 def glazing_project_detail(request, glazing_project_id):
     windows_query_set = Windows.objects.filter(glazing_project_id = glazing_project_id)
     detail = get_object_or_404(Glazing_Project, pk=glazing_project_id)
+
+    total_area = windows_query_set.aggregate(Sum('window_area'))
+    total_shgc_proposed = windows_query_set.aggregate(Sum('shgc_proposed'))
+    total_conductance = windows_query_set.aggregate(Sum('conductance'))
+
+    #import pdb; pdb.set_trace()
+
+    net_glazed_area_to_floor_area_ratio = float(total_area.get('window_area__sum')) / float(detail.nett_floor_area)
+    
     return render(request, 'glazing/glazing_project_detail.html', {
         'windows_query_set' : windows_query_set,
-        'detail': detail,
+        'detail': detail, 'total_area': total_area,
+        'total_shgc_proposed': total_shgc_proposed,
+        'total_conductance': total_conductance,
+        'net_glazed_area_to_floor_area_ratio': net_glazed_area_to_floor_area_ratio
     })
 
 def glazing_project_edit(request, pk):
