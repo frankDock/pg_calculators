@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^new_window/(?P<glazing_project_id>[0-9]+)/$', views.windows_new, name='windows_new'),
     url(r'^windows/(?P<windows_id>[0-9]+)/$', views.windows_detail, name='windows_detail'),
     url(r'^windows/(?P<pk>[0-9]+)/edit/$', views.windows_edit, name='windows_edit'),
+    url(r'^climate-map/$', views.climate_map, name='climate_map'),
 ]
 

@@ -81,3 +81,8 @@ def windows_edit(request, pk):
     else:
         form = WindowsForm(instance=post)
     return render(request, 'glazing/windows_edit.html', {'form': form})
+
+def climate_map(request):
+    
+    return render(request, 'glazing/climate_map.html', {})
+
