@@ -10,6 +10,8 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options):
 
+		Solar_Exposure_Factor.objects.all().delete()
+
 		with open(os.path.join(settings.ROOT_PATH, 'glazing/data/import.csv'), 'rb') as file:
 			rows = csv.reader(file, delimiter=",", quotechar='"')
 
@@ -18,10 +20,11 @@ class Command(BaseCommand):
 				if rows.line_num == 1:
 					continue
 
-				#print "item_code: " + row[0]
-				#print "count_theoretical:  " + row[1]
+				#import pdb; pdb.set_trace()
+				zone = Climate_Zone.objects.get(description=row[0])
+				orientation = Orientation.objects.get(symbol=row[1])
 
-				db_row = Solar_Exposure_Factor(zone=row[0],orientation=row[1], e=row[2], ph=row[3])
+				db_row = Solar_Exposure_Factor(zone=zone,orientation=orientation, e=row[2], ph=row[3])
 				db_row.save()
 
 			# dump entire table
