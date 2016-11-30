@@ -88,7 +88,14 @@ def windows_edit(request, pk):
 
     return render(request, 'glazing/windows_edit.html', {'form': form})
 
+<<<<<<< HEAD
 
 def climate_map(request):
     
     return render(request, 'glazing/climate_map.html', {})
+=======
+def climate_map(request):
+    
+    return render(request, 'glazing/climate_map.html', {})
+
+>>>>>>> 05f7d471dca89540796dd5f7e6fb5cec249cb3e1
