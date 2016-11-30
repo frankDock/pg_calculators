@@ -78,6 +78,8 @@ class Glazing_Project(models.Model):
     climate_zone_id = models.ForeignKey(Climate_Zone)
     floor_number = models.IntegerField(default=1)
     nett_floor_area = models.IntegerField(default=1)
+    target_shgc = models.FloatField(default=0)
+    target_u = models.FloatField(default=0)
 
     def __unicode__(self):
         return u'{0}'.format(self.description)
@@ -86,7 +88,12 @@ class Glazing_Project(models.Model):
         verbose_name = 'Glazing Project'
         verbose_name_plural = 'Glazing Projects'
 
-    
+    def save(self, force_insert=False, force_update=False):
+        #target_shgc
+        self.target_shgc = self.nett_floor_area * self.climate_zone_id.CSHGC
+        self.target_u = self.nett_floor_area * self.climate_zone_id.CU
+
+        super(Glazing_Project, self).save(force_insert, force_update)
 
 class Solar_Exposure_Factor(models.Model):
     zone = models.ForeignKey(Climate_Zone)
@@ -137,7 +144,7 @@ class Windows(models.Model):
 
         #solar_exposure
         try:
-            self.solar_exposure = Solar_Exposure_Factor.objects.get(ph = self.ph, zone = self.glazing_project_id.climate_zone_id, orientation = self.orientation_id)
+            self.solar_exposure = Solar_Exposure_Factor.objects.get(ph = round(self.ph,1), zone = self.glazing_project_id.climate_zone_id, orientation = self.orientation_id)
         except ObjectDoesNotExist:
             self.solar_exposure = None
         
@@ -149,13 +156,13 @@ class Windows(models.Model):
         
         #shgc_proposed
         try:
-            self.shgc_proposed = self.window_area * self.solar_exposure.e * self.glass_frame_join.SHGC
+            self.shgc_proposed = round(self.window_area * self.solar_exposure.e * self.glass_frame_join.SHGC,2)
         except:
             self.shgc_proposed = 0
         
         #conductance
         try:
-            self.conductance = self.window_area * self.glass_frame_join.U_Value
+            self.conductance = round(self.window_area * self.glass_frame_join.U_Value,2)
         except:
             self.conductance = 0
 

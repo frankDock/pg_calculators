@@ -26,15 +26,16 @@ class WindowsForm(forms.ModelForm):
   
   class Meta:
     model = Windows
-    fields = ('glazing_project_id', 'description', 'width', 'height', 'shading_p', 'shading_h', 'orientation_id', 'glass_id', 'frame_id')
-  
-  '''
-  glazing_project_id = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    #fields = '__all__'
+    exclude = ['glazing_project_id']
+    #fields = ('glazing_project_id', 'description', 'width', 'height', 'shading_p', 'shading_h', 'orientation_id', 'glass_id', 'frame_id')
+    
+  #glazing_project_id = forms.CharField(label = 'Glazing Project',widget=forms.TextInput(attrs={'class':'form-control'}))
   description = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-  width = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+  width = forms.CharField(label = 'Width (m)', widget=forms.TextInput(attrs={'class':'form-control'}))
   height = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-  orientation_id = forms.IntegerField(widget=forms.Select(
-    choices=Orientation.objects.all().values_list('id', 'description')))  
-  products_id = forms.IntegerField(widget=forms.Select(
-    choices=Products.objects.all().values_list('id', 'description')))
-  '''
+  #orientation_id = forms.IntegerField(widget=forms.Select(
+  #choices=Orientation.objects.all().values_list('id', 'description')))  
+  #products_id = forms.IntegerField(widget=forms.Select(
+  #choices=Products.objects.all().values_list('id', 'description')))
+  

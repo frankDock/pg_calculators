@@ -29,9 +29,10 @@ def glazing_project_detail(request, glazing_project_id):
     total_shgc_proposed = windows_query_set.aggregate(Sum('shgc_proposed'))
     total_conductance = windows_query_set.aggregate(Sum('conductance'))
 
-    #import pdb; pdb.set_trace()
+    net_glazed_area_to_floor_area_ratio = 0
 
-    net_glazed_area_to_floor_area_ratio = float(total_area.get('window_area__sum')) / float(detail.nett_floor_area)
+    if total_area.get('window_area__sum') is not None:
+        net_glazed_area_to_floor_area_ratio = round(float(total_area.get('window_area__sum')) / float(detail.nett_floor_area),2)
     
     return render(request, 'glazing/glazing_project_detail.html', {
         'windows_query_set' : windows_query_set,
@@ -72,12 +73,22 @@ def windows_detail(request, windows_id):
 
 def windows_edit(request, pk):
     post = get_object_or_404(Windows, pk=pk)
+    #form_class = WindowsForm
     if request.method == "POST":
-        form = WindowsForm(request.POST, instance=post)
+        form = WindowsForm(request.POST,instance=post ) 
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('glazing:windows_detail', windows_id = post.pk)
+            # import pdb; pdb.set_trace()
+            return redirect('glazing:glazing_project_detail', glazing_project_id = post.glazing_project_id.pk)
+
     else:
         form = WindowsForm(instance=post)
+ 
+
     return render(request, 'glazing/windows_edit.html', {'form': form})
+
+
+def climate_map(request):
+    
+    return render(request, 'glazing/climate_map.html', {})
