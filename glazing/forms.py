@@ -21,21 +21,17 @@ class GlazingProjectForm(forms.ModelForm):
 
 class WindowsForm(forms.ModelForm):
 
-  #orientation_id = forms.ModelChoiceField(queryset=Orientation.objects.all().order_by('description'),
-   #                                       initial=0)
   
   class Meta:
     model = Windows
-    #fields = '__all__'
-    exclude = ['glazing_project_id']
-    #fields = ('glazing_project_id', 'description', 'width', 'height', 'shading_p', 'shading_h', 'orientation_id', 'glass_id', 'frame_id')
-    
-  #glazing_project_id = forms.CharField(label = 'Glazing Project',widget=forms.TextInput(attrs={'class':'form-control'}))
+ 
+    exclude = ['ph', 'window_area', 'solar_exposure', 'glass_frame_join', 'shgc_proposed','conductance']
+
   description = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
   width = forms.CharField(label = 'Width (m)', widget=forms.TextInput(attrs={'class':'form-control'}))
   height = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-  #orientation_id = forms.IntegerField(widget=forms.Select(
-  #choices=Orientation.objects.all().values_list('id', 'description')))  
-  #products_id = forms.IntegerField(widget=forms.Select(
-  #choices=Products.objects.all().values_list('id', 'description')))
+  shading_p = forms.CharField(label = 'Shading P', widget=forms.TextInput(attrs={'class':'form-control'}))
+  shading_h = forms.CharField(label = 'Shading H', widget=forms.TextInput(attrs={'class':'form-control'}))
+
+
   
