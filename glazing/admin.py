@@ -1,6 +1,9 @@
-from django.contrib import admin
-
 from .models import *
+from .forms import *
+from django import forms
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 
 class GlassAdmin(admin.ModelAdmin):
     list_display = ('description',)
@@ -30,4 +33,40 @@ class Solar_Exposure_FactorAdmin(admin.ModelAdmin):
     list_display = ('zone', 'orientation', 'ph', 'e')
     list_filter = ('zone__description','orientation__description',)
 
-admin.site.register(Solar_Exposure_Factor, Solar_Exposure_FactorAdmin)
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ('Name', 'Type')
+    list_editable = ('Type',)
+
+class UserProfileInline(admin.TabularInline):
+    model = UserProfile
+    fk_name = 'user'
+    max_num = 1
+
+class UserAdmin(BaseUserAdmin):
+
+    inlines = [UserProfileInline,]
+
+    list_display = ('email','username', 'is_superuser')
+
+    fieldsets = (
+        (None, {'fields': ('username', 'email')}),
+    )
+    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
+    # overrides get_fieldsets to use this attribute when creating a user.
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2')}
+        ),
+    )
+    search_fields = ('email',)
+    ordering = ('-date_joined',)
+    filter_horizontal = ()
+
+# Now register the new UserAdmin...
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
+
+# ... and, since we're not using Django's built-in permissions,
+# unregister the Group model from admin.
+# admin.site.unregister(Group)

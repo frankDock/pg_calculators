@@ -1,7 +1,14 @@
 from __future__ import unicode_literals
-
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,)
+    company = models.CharField(max_length=500, blank=True)
+
 
 class Glass_Category(models.Model):
     description = models.CharField(max_length=200)
