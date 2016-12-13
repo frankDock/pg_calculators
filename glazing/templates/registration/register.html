@@ -1,0 +1,58 @@
+{% extends 'glazing/base.html' %}
+
+{% block content %}
+
+    <form action="{% url 'register' %}" method="POST" class="form-vertical">
+
+  <div class="alert alert-error" id="signup_message"></div>
+    {% csrf_token %}
+
+ <fieldset>
+
+  {% for field in user_form %}
+    {% if field.is_hidden %}
+      {{ field }}
+    {% else %}
+        <div class="control-group">
+          {{ field.label_tag }}
+          <div class="controls">
+            {{ field }}
+            <span id="{{ field.name }}_errors" class="help-inline"></span>
+          </div>
+        </div>
+
+    {% endif %}
+
+  {% endfor %}
+
+    {% if profile.is_active%}
+      {{ profile }}
+    {% else %}
+            <div class="control-group">
+              {{ profile.label_tag }}
+              <div class="controls">
+                {{ profile }}
+{#                  <select name="company" id = "id_company">#}
+{#                      <option value="glass and aluminium fabricator">glass and aluminium fabricator</option>#}
+{#                      <option value="contruction company">contruction company</option>#}
+{#                      <option value="architect">architect</option>#}
+{#                  </select>#}
+                <span id="{{ profile.name }}_errors" class="help-inline"></span>
+              </div>
+            </div>
+
+    {% endif %}
+
+
+  {% for name, err in errs %}
+        {{ name }} {{ err }}
+  {% endfor %}
+    <br>
+    <input type="submit" name="submit" value="Sign up"
+           class="btn btn-primary btn-large" />
+    <a href="{% url 'login' %}">to Login</a>
+  </fieldset>
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'glazing/base.html' %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="span6">
+        <h3>Log In</h3>
+        {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
+        <form method="post" action="{% url 'login' %}" class="form-vertical">
+            <div class="alert alert-error" id="signin_message"></div>
+            {% csrf_token %}
+            <fieldset>
+
+            <div class="control-group">
+              {{ form.username.label_tag }}
+              <div class="controls">
+                {{ form.username }}
+              </div>
+            </div>
+
+            <div class="control-group">
+              {{ form.password.label_tag }}
+              <div class="controls">
+                {{ form.password }}
+              </div>
+            </div>
+
+            </fieldset>
+            <br>
+            <input type="submit" name="submit" value="Login"
+           class="btn btn-primary btn-large" />
+            <input type="hidden" name="next" value="{{ next }}" />
+            <a href="{% url 'password_reset' %}">Forgot password?</a>
+
+
+        </form>
+
+    </div>
+
+    <div class="span6">
+        <h3>Not a Member</h3>
+        <p>You can register right now!</p>
+
+    </div>
+    </div>
+
+{% endblock %}

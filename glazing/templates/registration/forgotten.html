@@ -1,0 +1,32 @@
+{% extends 'glazing/base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="span6">
+            <h3>Log In</h3>
+            {% if form.errors %}
+                <p>The email address you submitted was not found in the database. Please try again.</p>
+            {% endif %}
+            <form method="post" action="{% url 'password_reset' %}">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>{{ form.email.label_tag }}</td>
+                        <td>{{ form.email }}</td>
+                    </tr>
+                </table>
+                <input type="submit" value="Reset my password" />
+                <input type="hidden" name="next" value="{{ next }}" />
+                <a href="{% url 'login' %}">return to login</a>
+            </form>
+        </div>
+
+        <div class="span6">
+            <h3>Not a Member</h3>
+            <p>You can register right now!</p>
+
+        </div>
+    </div>
+
+{% endblock %}

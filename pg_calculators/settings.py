@@ -26,25 +26,28 @@ SECRET_KEY = '_osv3337$d3k7)0gwth#==-8zwqs_yv*i1bgt8cjios5nfv4o&'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/glazing'
 
-
+# AUTH_USER_MODEL = 'glazing.Users'
+# AUTH_USER_MODEL = 'accounts.User'
 # Application definition
 
 INSTALLED_APPS = [
-    'glazing.apps.GlazingConfig',    
+    'glazing.apps.GlazingConfig',
+    'pg_calculators',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'csvimport.app.CSVImportConf',  # use AppConfig for django >=1.7 csvimport >=2.2
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

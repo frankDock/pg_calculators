@@ -1,7 +1,46 @@
 #-*- coding: utf-8 -*-
 from django import forms
-
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import *
+
+class UserForm(forms.Form):
+    id = models.AutoField(primary_key=True)
+    username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
+                                error_messages={'invalid': "This value must contain only letters, numbers and underscores."})
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label="Email address")
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label="Password")
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)),
+        label="Password (again)")
+
+    def clean_username(self):
+        try:
+            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            return self.cleaned_data['username']
+        raise forms.ValidationError("The username already exists. Please try another one.")
+
+    def clean(self):
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+                raise forms.ValidationError("The two password fields did not match.")
+        return self.cleaned_data
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+class ProfileForm(forms.ModelForm):
+    TYPES = (('glass and aluminium fabricator','glass and aluminium fabricator'),
+             ('contruction company', 'contruction company'),
+             ('architect', 'architect'))
+    company = forms.MultipleChoiceField(widget=forms.Select, choices=TYPES)
+
+
+    class Meta:
+        model = UserProfile
+        fields = ('company', 'user',)
 
 class EmptyChoiceField(forms.ChoiceField):
     	def __init__(self, choices=(), empty_label=None, required=True, widget=None, label=None, initial=None, help_text=None, *args, **kwargs):
@@ -11,7 +50,6 @@ class EmptyChoiceField(forms.ChoiceField):
 			choices = tuple([(u'', empty_label)] + list(choices))
 
 		super(EmptyChoiceField, self).__init__(choices=choices, required=required, widget=widget, label=label, initial=initial, help_text=help_text, *args, **kwargs) 
-
 
 class GlazingProjectForm(forms.ModelForm):
   
