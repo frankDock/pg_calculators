@@ -29,6 +29,15 @@ ALLOWED_HOSTS = []
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/glazing'
 
+
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "carlwilsonwin@gmail.com"
+EMAIL_HOST_PASSWORD = 'admin123'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 # AUTH_USER_MODEL = 'glazing.Users'
 # AUTH_USER_MODEL = 'accounts.User'
 # Application definition

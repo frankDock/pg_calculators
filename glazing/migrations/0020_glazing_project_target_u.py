@@ -17,4 +17,11 @@ class Migration(migrations.Migration):
             name='target_u',
             field=models.FloatField(default=0),
         ),
+
+        migrations.AddField(
+            model_name='glazing_project',
+            name='username',
+            field=models.CharField(max_length=20),
+        ),
+
     ]

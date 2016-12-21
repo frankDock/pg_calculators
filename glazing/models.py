@@ -9,7 +9,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
     company = models.CharField(max_length=500, blank=True)
 
-
 class Glass_Category(models.Model):
     description = models.CharField(max_length=200)
 
@@ -87,6 +86,7 @@ class Glazing_Project(models.Model):
     nett_floor_area = models.IntegerField(default=1)
     target_shgc = models.FloatField(default=0)
     target_u = models.FloatField(default=0)
+    username = models.CharField(max_length=20)
 
     def __unicode__(self):
         return u'{0}'.format(self.description)

@@ -13,7 +13,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 2.7.6 virtualenv at ~/workspace/frank/alon/alon_env" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 2.7.6 virtualenv at ~/workspace/alon_2.7_env" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

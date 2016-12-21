@@ -7,8 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_protect
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse, HttpResponseServerError
+from django.http import HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -29,8 +28,6 @@ def register(request):
 
         # print(RegistrationForm(request.POST))
         user_form = UserForm(request.POST)
-        if user_form.clean() != True:
-            return failure(user_form.clean())
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid():
 
@@ -49,14 +46,12 @@ def register(request):
             )
 
             # return HttpResponseRedirect('/register/success/')
-
-            return HttpResponseRedirect('/register/done/')
+            login(request, user)
+            return render(request, 'registration/welcome.html', {'user': user, })
         else:
-            error = ""
-            for field in user_form:
-                if field.errors != []:
-                    error = field.errors
-            return failure(error)
+            return failure([
+                       (field.name, field.errors) for field in user_form
+                       ])
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
@@ -70,24 +65,28 @@ def register(request):
 
 def welcome(request):
     c = RequestContext(request)
+
     return render_to_response('registration/welcome.html', c)
 
 
 @login_required
 def glazing_project_list(request):
-    glazing_projects_query_set = Glazing_Project.objects.filter(pub_date__lte=timezone.now()).order_by('pub_date')
+    username = request.user.username
+    glazing_projects_query_set = Glazing_Project.objects.filter(pub_date__lte=timezone.now(), username = username).order_by('pub_date')
     return render(request, 'glazing/glazing_project_list.html', {'glazing_projects_query_set' : glazing_projects_query_set})
 
 @login_required
 def glazing_project_new(request):
     if request.method == "POST":
             form = GlazingProjectForm(request.POST)
+
             if form.is_valid():
                     post = form.save(commit=False)
                     post.pub_date = timezone.now()
+                    post.username = request.user.username
                     post.save()
                     return redirect('glazing:glazing_project_detail', glazing_project_id = post.pk)
-    else:
+    else:    
             form = GlazingProjectForm()
     return render(request, 'glazing/glazing_project_edit.html', {'form': form})
 
@@ -104,7 +103,7 @@ def glazing_project_detail(request, glazing_project_id):
 
     if total_area.get('window_area__sum') is not None:
         net_glazed_area_to_floor_area_ratio = round(float(total_area.get('window_area__sum')) / float(detail.nett_floor_area),2)
-
+    
     return render(request, 'glazing/glazing_project_detail.html', {
         'windows_query_set' : windows_query_set,
         'detail': detail, 'total_area': total_area,
@@ -136,7 +135,7 @@ def windows_new(request, glazing_project_id):
                     post.window_area = post.width * post.height
                     post.save()
                     return redirect('glazing:windows_detail', windows_id = post.pk)
-    else:
+    else:    
             form = WindowsForm(initial={'glazing_project_id': glazing_project_id})
     return render(request, 'glazing/windows_edit.html', {'form': form})
 
@@ -150,7 +149,7 @@ def windows_edit(request, pk):
     post = get_object_or_404(Windows, pk=pk)
     #form_class = WindowsForm
     if request.method == "POST":
-        form = WindowsForm(request.POST,instance=post )
+        form = WindowsForm(request.POST,instance=post ) 
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
@@ -159,17 +158,17 @@ def windows_edit(request, pk):
 
     else:
         form = WindowsForm(instance=post)
-
+ 
 
     return render(request, 'glazing/windows_edit.html', {'form': form})
 
 @login_required
 def climate_map(request):
-
+    
     return render(request, 'glazing/climate_map.html', {})
 
 @login_required
 def climate_map(request):
-
+    
     return render(request, 'glazing/climate_map.html', {})
 

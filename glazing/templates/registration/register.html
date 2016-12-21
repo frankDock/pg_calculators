@@ -32,11 +32,6 @@
               {{ profile.label_tag }}
               <div class="controls">
                 {{ profile }}
-{#                  <select name="company" id = "id_company">#}
-{#                      <option value="glass and aluminium fabricator">glass and aluminium fabricator</option>#}
-{#                      <option value="contruction company">contruction company</option>#}
-{#                      <option value="architect">architect</option>#}
-{#                  </select>#}
                 <span id="{{ profile.name }}_errors" class="help-inline"></span>
               </div>
             </div>
@@ -48,11 +43,35 @@
         {{ name }} {{ err }}
   {% endfor %}
     <br>
-    <input type="submit" name="submit" value="Sign up"
+    <input class = "sign_up" type="submit" name="submit" value="Sign up"
            class="btn btn-primary btn-large" />
     <a href="{% url 'login' %}">to Login</a>
   </fieldset>
 
     </form>
+<script>
+$( document ).ready(function() {
+    $( "form" ).submit(function(e) {
 
+      if ( $( "#id_password1" ).val() != $( "#id_password2" ).val() ) {
+        $( "#password2_errors" ).text( "The two password fields did not match." ).show();
+        $( "#password2_errors" ).css('color', 'red');
+        return false;
+      }
+
+      email_val = $("#id_email").val();
+
+      if((email_val.indexOf('@') == -1) || (email_val.indexOf('.') == -1)){
+
+          $( "#email_errors" ).text( "The Email Address you entered does not appear to be valid." ).show();
+          $( "#email_errors" ).css('color', 'red');
+          return false
+      }
+
+      return true;
+
+    });
+});
+
+</script>
 {% endblock %}
